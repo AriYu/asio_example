@@ -25,19 +25,25 @@ int main( int argc, char** argv )
 
   // 接続待機 接続があるまでブロック
   acc.accept(socket);
+ 
+  while(true){
 
-  // メッセージ受信
-  boost::system::error_code error;
-  boost::array<float, 5> foo;
-  const size_t bytes = boost::asio::read(socket, boost::asio::buffer(&foo, sizeof(foo)), error);
 
-  if (error && error != asio::error::eof) {
-	std::cout << "receive failed: " << error.message() << std::endl;
-  }
-  else {
-	std::cout << "received " << bytes << " bytes" << std::endl;
-	for(unsigned int  i = 0; i < foo.size(); i++){
-	  std::cout << foo[i] << std::endl;
+	// メッセージ受信
+	boost::system::error_code error;
+	boost::array<float, 5> foo;
+	const size_t bytes = boost::asio::read(socket, boost::asio::buffer(&foo, sizeof(foo)), error);
+
+	if (error && error != asio::error::eof) {
+	  std::cout << "receive failed: " << error.message() << std::endl;
+	}
+	else {
+	  if(bytes != 0){
+		std::cout << "received " << bytes << " bytes" << std::endl;
+		for(unsigned int  i = 0; i < foo.size(); i++){
+		  std::cout << foo[i] << std::endl;
+		}
+	  }
 	}
   }
 }
