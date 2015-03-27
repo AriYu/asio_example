@@ -20,24 +20,22 @@ int main( int argc, char** argv )
 
   asio::io_service io_service;
 
-  tcp::acceptor acc(io_service, tcp::endpoint(tcp::v4(), 18080));
+  tcp::acceptor acc(io_service, tcp::endpoint(tcp::v4(), std::atoi(argv[1])));
   tcp::socket socket(io_service);
 
-  // 接続待機
+  // 接続待機 接続があるまでブロック
   acc.accept(socket);
 
   // メッセージ受信
-  asio::streambuf receive_buffer;
   boost::system::error_code error;
-  asio::read(socket, receive_buffer, asio::transfer_all(), error);
+  boost::array<float, 5> foo;
+  const size_t bytes = boost::asio::read(socket, boost::asio::buffer(&foo, sizeof(foo)), error);
 
   if (error && error != asio::error::eof) {
 	std::cout << "receive failed: " << error.message() << std::endl;
   }
   else {
-	const std::vector<float> foo = boost::asio::buffer_cast<const float*>(receive_buffer.data());
-	const std::vector<float> foo = (receive_buffer.data());
-	//	const char* data = asio::buffer_cast<const char*>(receive_buffer.data());
+	std::cout << "received " << bytes << " bytes" << std::endl;
 	for(unsigned int  i = 0; i < foo.size(); i++){
 	  std::cout << foo[i] << std::endl;
 	}
