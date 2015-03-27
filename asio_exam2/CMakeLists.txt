@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-project( asio_send_array )
+project( asio_array )
 
 ADD_DEFINITIONS(
 -g
@@ -13,3 +13,6 @@ FIND_PACKAGE( Boost 1.53 COMPONENTS system REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS}) 
 add_executable(asio_send_array asio_send_array.cpp) 
 target_link_libraries(asio_send_array ${Boost_LIBRARIES} pthread )
+
+add_executable(asio_receive_array asio_receive_array.cpp) 
+target_link_libraries(asio_receive_array ${Boost_LIBRARIES} pthread )

@@ -7,11 +7,11 @@
 
 using namespace boost::asio;
 
-int main( unsigned argc, char** argv )
+int main( int argc, char** argv )
 {
 
   if ( argc < 3 ) {
-	std::cerr << "usage: " << argv[0] << " host port" << std::endl;
+	std::cerr << "usage: " << argv[0] << "host name " << " " << " host port" << std::endl;
 	exit( EXIT_FAILURE );
   }
 
@@ -43,10 +43,7 @@ int main( unsigned argc, char** argv )
 		std::cout << "connected" << std::endl;
 	  }
 
-	  const size_t bytes = boost::asio::write(
-											  socket,
-											  buffer( foo )
-											  );
+	  const size_t bytes = boost::asio::write(socket, boost::asio::buffer( foo ));
 
 	  std::cout << "sent " << bytes << " bytes" << std::endl;
 	  return 0;
