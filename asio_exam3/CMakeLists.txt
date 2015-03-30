@@ -8,7 +8,7 @@ ADD_DEFINITIONS(
 -std=c++11
 )
 
-FIND_PACKAGE( Boost 1.53 COMPONENTS system REQUIRED) 
+FIND_PACKAGE( Boost 1.53 COMPONENTS system serialization REQUIRED) 
 
 include_directories(${Boost_INCLUDE_DIRS}) 
 add_executable(asio_send_array asio_send_array.cpp) 
