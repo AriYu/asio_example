@@ -28,7 +28,6 @@ int main( int argc, char** argv )
  
   while(true){
 
-
 	// メッセージ受信
 	boost::system::error_code error;
 	boost::array<float, 5> foo;
