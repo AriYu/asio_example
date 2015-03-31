@@ -60,9 +60,18 @@ int main( int argc, char** argv )
 			if(received_bytes != 0 && received_bytes > 0)
 			  {
 				std::cout << "received " << received_bytes << " bytes " << std::endl; 
-				std::cout << "right hand state : " << messenger.right_hand_state_ << std::endl;
-				std::cout << "left hand state  : " << messenger.left_hand_state_ << std::endl;
-				std::cout << std::endl;
+				for(size_t i = 0; i < 6; i++)
+				  {
+					if(messenger.bodies_[i].isTracked_ == true)
+					  {
+						std::cout << "body[" << i << "]::right hand state: " 
+								  << messenger.bodies_[i].right_hand_state_ << std::endl;
+						std::cout << "body[" << i << "]::left hand state : " 
+								  << messenger.bodies_[i].left_hand_state_ << std::endl;
+						std::cout << std::endl;	
+					  }
+				  }
+
 			  }
 		  }
 	  }catch(std::exception& e)

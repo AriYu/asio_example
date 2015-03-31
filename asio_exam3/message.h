@@ -94,7 +94,8 @@ class beta_body
 {
  public:
   beta_body(){}
-  std::vector< position > positions_;
+  //std::vector< position > positions_;
+  position positions_[25];
   bool isTracked_;
   int right_hand_state_;
   int left_hand_state_;
@@ -104,6 +105,7 @@ class beta_body
 	void serialize(Archive& ar, const unsigned int version)
 	{
 	  ar & positions_;
+	  //ar & boost::serialization::make_array(&positions_, sizeof(positions_));
 	  ar & isTracked_;
 	  ar & right_hand_state_;
 	  ar & left_hand_state_;
@@ -114,13 +116,26 @@ class beta_message
 {
  public:
   beta_message(){}
-  std::vector< beta_body > bodies_;
+  //std::vector< beta_body > bodies_;
+  beta_body bodies_[6];
  private:
   friend class boost::serialization::access;
   template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
 	{
-	  ar & bodies_;
+	  for(int i = 0 ; i < 6; i++)
+		{
+		  for(int j = 0; j < 25; j++)
+			{
+			  ar & bodies_[i].positions_[j].x_;
+			  ar & bodies_[i].positions_[j].y_;
+			  ar & bodies_[i].positions_[j].z_;
+			}
+		  ar & bodies_[i].isTracked_;
+		  ar & bodies_[i].right_hand_state_;
+		  ar & bodies_[i].left_hand_state_;
+		}
+	  //ar & boost::serialization::make_array(&bodies_, sizeof(bodies_));
 	}
 };
 
