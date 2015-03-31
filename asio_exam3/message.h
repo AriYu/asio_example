@@ -127,10 +127,17 @@ class beta_message
 		{
 		  for(int j = 0; j < 25; j++)
 			{
+			  std::cout << "p[" << i << "][" << j << "]x:" << bodies_[i].positions_[j].x_ << std::endl;
+			  std::cout << "p[" << i << "][" << j << "]y:" << bodies_[i].positions_[j].y_ << std::endl;
+			  std::cout << "p[" << i << "][" << j << "]z:" << bodies_[i].positions_[j].z_ << std::endl;
 			  ar & bodies_[i].positions_[j].x_;
 			  ar & bodies_[i].positions_[j].y_;
 			  ar & bodies_[i].positions_[j].z_;
+			  std::cout << "a[" << i << "][" << j << "]x:" << bodies_[i].positions_[j].x_ << std::endl;
+			  std::cout << "a[" << i << "][" << j << "]y:" << bodies_[i].positions_[j].y_ << std::endl;
+			  std::cout << "a[" << i << "][" << j << "]z:" << bodies_[i].positions_[j].z_ << std::endl;
 			}
+		  std::cout << "hunyahunya3 : " << i << std::endl;
 		  ar & bodies_[i].isTracked_;
 		  ar & bodies_[i].right_hand_state_;
 		  ar & bodies_[i].left_hand_state_;

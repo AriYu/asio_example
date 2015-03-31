@@ -70,14 +70,18 @@ public:
 		// 本体を受信
 		inbound_data_.resize(inbound_data_size);
 		size_t data_bytes = boost::asio::read(socket_, 
-											  boost::asio::buffer(inbound_data_));
+											  boost::asio::buffer(inbound_data_),
+											  boost::asio::transfer_exactly(inbound_data_size));
 		std::cout << "data_bytes : " << data_bytes << std::endl;
 		// 本体をデシリアライズ
 		std::string archive_data(&inbound_data_[0], inbound_data_.size());
 		std::istringstream archive_stream(archive_data);
 		boost::archive::text_iarchive archive(archive_stream);
+	
+
 		archive >> messenger;
 
+ 
 		return data_bytes;
 	  }
 	catch(std::exception& e)
