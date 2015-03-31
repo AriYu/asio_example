@@ -48,9 +48,9 @@ int main( int argc, char** argv )
 	try
 	  {
 		boost::system::error_code error;
-		message messenger;
+		//message messenger;
+		beta_message messenger;
 		size_t received_bytes = new_receiver->read(messenger);
-		std::cout << "received " << received_bytes << " bytes " << std::endl;
 		if (error && error != asio::error::eof) 
 		  {
 			std::cout << "receive failed: " << error.message() << std::endl;
@@ -59,8 +59,10 @@ int main( int argc, char** argv )
 		  {
 			if(received_bytes != 0 && received_bytes > 0)
 			  {
-				std::cout << "received " << received_bytes << " bytes " 
-						  << " hand state : " << messenger.bodies_[0].isTracked_ << std::endl;
+				std::cout << "received " << received_bytes << " bytes " << std::endl; 
+				std::cout << "right hand state : " << messenger.right_hand_state_ << std::endl;
+				std::cout << "left hand state  : " << messenger.left_hand_state_ << std::endl;
+				std::cout << std::endl;
 			  }
 		  }
 	  }catch(std::exception& e)
