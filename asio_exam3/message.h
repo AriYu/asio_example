@@ -6,46 +6,45 @@
 
 #include <boost/serialization/vector.hpp>
 
+
 class position
 {
-public:
-	position() :x_(0), y_(0), z_(0){}
-	position(double x, double y, double z){
-		x_ = x;
-		y_ = y;
-		z_ = z;
+ public:
+ position() :x_(0), y_(0), z_(0){}
+  position(double x, double y, double z){
+	x_ = x;
+	y_ = y;
+	z_ = z;
+  }
+  double x_;
+  double y_;
+  double z_;
+ private:
+  friend class boost::serialization::access;
+  template<class Archive>
+	void serialize(Archive& ar, const unsigned int version)
+	{
+	  ar & x_;
+	  ar & y_;
+	  ar & z_;
 	}
-
-	double x_;
-	double y_;
-	double z_;
-private:
-    friend class boost::serialization::access;  
-    template<class Archive>
-     void serialize(Archive& ar, const unsigned int version)
-     {
-       ar & x_;
-	   ar & y_;
-	   ar & z_;
-     }
 };
-
 class body
 {
  public:
   enum { joint_count = 25 };
   enum HandState
   {
-	HandState_Unknown    = 0,
+	HandState_Unknown = 0,
 	HandState_NotTracked = 1,
-	HandState_Open       = 2,
-	HandState_Closed     = 3,
-	HandState_Lasso      = 4
+	HandState_Open = 2,
+	HandState_Closed = 3,
+	HandState_Lasso = 4
   };
   body(){
-	positions_.resize( body::joint_count + 1 );
+	positions_.resize(body::joint_count + 1);
 	right_hand_state_ = body::HandState::HandState_Unknown;
-	left_hand_state_  = body::HandState::HandState_Unknown;
+	left_hand_state_ = body::HandState::HandState_Unknown;
 	isTracked_ = false;
   }
   std::vector< position > positions_;
@@ -53,37 +52,56 @@ class body
   HandState left_hand_state_;
   bool isTracked_;
  private:
-  friend class boost::serialization::access;  
+  friend class boost::serialization::access;
   template<class Archive>
 	void serialize(Archive& ar, const unsigned int version)
 	{
-	  ar & positions_;
+	  size_t size = positions_.size();
+	  for(size_t i = 0; i < size; i++)
+		{
+		  ar & positions_[i];
+		}
 	  ar & right_hand_state_;
 	  ar & left_hand_state_;
 	  ar & isTracked_;
 	}
 };
-
-class message
+  class message
 {
-public:
-	enum { width = 1920 }; // color image width
-	enum { height = 1080 }; // color image height
-	enum { body_count = 6 };
-	message()
+ public:
+  enum { width = 1920 }; // color image width
+  enum { height = 1080 }; // color image height
+  enum { body_count = 6 };
+  message()
 	{
-		bodies_.resize( message::body_count + 1);		
+	  bodies_.resize( message::body_count + 1);
 	}
-	
-	std::vector< body > bodies_;
+  std::vector< body > bodies_;
+ private:
+  friend class boost::serialization::access;
+  template<class Archive>
+	void serialize(Archive& ar, const unsigned int version)
+	{
+	  size_t size = bodies_.size();
+	  for(size_t i = 0; i < size; i++)
+		{
+		  ar & bodies_[i];
+		}
+	}
+ };
 
-private:
-    friend class boost::serialization::access;  
-    template<class Archive>
-     void serialize(Archive& ar, const unsigned int version)
-     {
-       ar & bodies_;
-     }
-};
+class beta_message
+{
+ public:
+  beta_message(){}
+  std::vector< position > positions_;
+ private:
+  friend class boost::serialization::access;
+  template<class Archive>
+	void serialize(Archive& ar, const unsigned int version)
+	{
+	  ar & positions_;
+	}
+}
 
 #endif
